@@ -27,7 +27,7 @@
         super.backgroundColor = [UIColor clearColor];
         UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
         UIViewController *rootViewController = [keyWindow rootViewController];
-        _bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+        _bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeMediumRectangle];
         _bannerView.delegate = self;
         _bannerView.adSizeDelegate = self;
         _bannerView.rootViewController = rootViewController;
@@ -50,8 +50,8 @@
         CGSize size = CGSizeFromGADAdSize(_bannerView.adSize);
         if(!CGSizeEqualToSize(size, self.bounds.size)) {
             self.onSizeChange(@{
-                                @"width": @(size.width),
-                                @"height": @(size.height)
+                                @"width": @(300),
+                                @"height": @(250)
                                 });
         }
     }
@@ -117,8 +117,8 @@ didFailToReceiveAdWithError:(GADRequestError *)error
 {
     CGSize adSize = CGSizeFromGADAdSize(size);
     self.onSizeChange(@{
-                              @"width": @(adSize.width),
-                              @"height": @(adSize.height) });
+                              @"width": @(300),
+                              @"height": @(250) });
 }
 
 @end
