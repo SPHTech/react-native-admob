@@ -47,7 +47,8 @@
 - (void)loadBanner
 {
     if(self.onSizeChange) {
-        CGSize size = CGSizeFromGADAdSize(_bannerView.adSize);
+        //CGSize size = CGSizeFromGADAdSize(_bannerView.adSize);//sometimes comes as 300x249 issue
+        CGSize size = CGSizeMake(300, 250);
         if(!CGSizeEqualToSize(size, self.bounds.size)) {
             self.onSizeChange(@{
                                 @"width": @(300),
