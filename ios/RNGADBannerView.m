@@ -48,11 +48,11 @@
 {
     if(self.onSizeChange) {
         //CGSize size = CGSizeFromGADAdSize(_bannerView.adSize);//sometimes comes as 300x249 issue
-        CGSize size = CGSizeMake(300, 250);
+        CGSize size = CGSizeMake(300.0f, 250.0f);
         if(!CGSizeEqualToSize(size, self.bounds.size)) {
             self.onSizeChange(@{
-                                @"width": @(300),
-                                @"height": @(250)
+                                @"width": @(300.0f),
+                                @"height": @(250.0f)
                                 });
         }
     }
@@ -118,8 +118,8 @@ didFailToReceiveAdWithError:(GADRequestError *)error
 {
     CGSize adSize = CGSizeFromGADAdSize(size);
     self.onSizeChange(@{
-                              @"width": @(300),
-                              @"height": @(250) });
+                              @"width": @(adSize.width),
+                              @"height": @(adSize.height) });
 }
 
 @end
