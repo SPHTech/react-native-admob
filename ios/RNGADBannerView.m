@@ -29,7 +29,8 @@
         UIViewController *rootViewController = [keyWindow rootViewController];
         _bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeMediumRectangle];
         _bannerView.delegate = self;
-        _bannerView.adSizeDelegate = self;
+        // TODO: removed because currently not using fluid ad sizes, should add back later
+        // _bannerView.adSizeDelegate = self;
         _bannerView.rootViewController = rootViewController;
         [self addSubview:_bannerView];
     }
@@ -46,16 +47,17 @@
 
 - (void)loadBanner
 {
-    if(self.onSizeChange) {
-        //CGSize size = CGSizeFromGADAdSize(_bannerView.adSize);//sometimes comes as 300x249 issue
-        CGSize size = CGSizeMake(300.0f, 250.0f);
-        if(!CGSizeEqualToSize(size, self.bounds.size)) {
-            self.onSizeChange(@{
-                                @"width": @(300.0f),
-                                @"height": @(250.0f)
-                                });
-        }
-    }
+    // TODO: Size is fixed right now, need to enable fuild size later
+    // if(self.onSizeChange) {
+    //     //CGSize size = CGSizeFromGADAdSize(_bannerView.adSize);//sometimes comes as 300x249 issue
+    //     CGSize size = CGSizeMake(300.0f, 250.0f);
+    //     if(!CGSizeEqualToSize(size, self.bounds.size)) {
+    //         self.onSizeChange(@{
+    //                             @"width": @(300.0f),
+    //                             @"height": @(250.0f)
+    //                             });
+    //     }
+    // }
     GADRequest *request = [GADRequest request];
     request.testDevices = _testDevices;
     [_bannerView loadRequest:request];
@@ -64,7 +66,6 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    _bannerView.frame = self.bounds;
 }
 
 # pragma mark GADBannerViewDelegate
@@ -72,9 +73,18 @@
 /// Tells the delegate an ad request loaded an ad.
 - (void)adViewDidReceiveAd:(__unused GADBannerView *)adView
 {
-   if (self.onAdLoaded) {
-       self.onAdLoaded(@{});
-   }
+    if (self.onSizeChange) {
+        //        self.onSizeChange(@{
+        //                            @"width": @(adView.frame.size.width),
+        //                            @"height": @(adView.frame.size.height) });
+        self.onSizeChange(@{
+                            @"width": @(300.0),
+                            @"height": @(250.0) });
+    }
+
+    if (self.onAdLoaded) {
+        self.onAdLoaded(@{});
+    }
 }
 
 /// Tells the delegate an ad request failed.
@@ -120,6 +130,10 @@ didFailToReceiveAdWithError:(GADRequestError *)error
     self.onSizeChange(@{
                               @"width": @(adSize.width),
                               @"height": @(adSize.height) });
+}
+
+- (void)reactSetFrame:(CGRect)frame {
+    _bannerView.frame = CGRectMake(frame.origin.x, frame.origin.y, 300.0, 250.0);
 }
 
 @end
